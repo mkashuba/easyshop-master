@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -78,6 +77,8 @@ public class DbProvider implements IDbProvider {
                                 listItem.add(document.toObject(Item.class));
                             }
                             Log.d("MY_TAG", "onComplete: itemList size = " + listItem.size());
+                            Log.d("MY_TAG", "onComplete: ITEM OBJ : " + listItem.get(0).toString());
+                            Log.d("MY_TAG", "onComplete: ITEM URL : " + listItem.get(0).getImg_url());
                             loadAllItemsFromDbCallback.setShopList(listItem);
                             listItem.clear();
                         } else {

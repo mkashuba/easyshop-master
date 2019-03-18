@@ -1,29 +1,30 @@
 package com.maxim.easyshop.model;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Item {
     private String title;
     private String barcode;
-    private String urlImg;
-    private Map<String, Double> priceMap;
+    private String img_url;
+    private Map<String, Double> prices;
 
     public Item() {
     }
 
-    public Item(String title, String barcode, String urlImg, Map<String, Double> priceMap) {
+    public Item(String title, String barcode, String img_url, Map<String, Double> prices) {
         this.title = title;
         this.barcode = barcode;
-        this.urlImg = urlImg;
-        this.priceMap = priceMap;
+        this.img_url = img_url;
+        this.prices = prices;
     }
 
-    public String getUrlImg() {
-        return urlImg;
+    public String getImg_url() {
+        return img_url;
     }
 
-    public void setUrlImg(String urlImg) {
-        this.urlImg = urlImg;
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
     }
 
     public String getTitle() {
@@ -42,12 +43,28 @@ public class Item {
         this.barcode = barcode;
     }
 
-    public Map<String, Double> getPriceMap() {
-        return priceMap;
+    public Map<String, Double> getPrices() {
+        return prices;
     }
 
-    public void setPriceMap(Map<String, Double> priceMap) {
-        this.priceMap = priceMap;
+    public void setPrices(Map<String, Double> prices) {
+        this.prices = prices;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(title, item.title) &&
+                Objects.equals(barcode, item.barcode) &&
+                Objects.equals(img_url, item.img_url) &&
+                Objects.equals(prices, item.prices);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, barcode, img_url, prices);
     }
 
     @Override
@@ -55,8 +72,8 @@ public class Item {
         return "Item{" +
                 "title='" + title + '\'' +
                 ", barcode='" + barcode + '\'' +
-                ", urlImg='" + urlImg + '\'' +
-                ", priceMap=" + priceMap +
+                ", img_url='" + img_url + '\'' +
+                ", prices=" + prices +
                 '}';
     }
 }

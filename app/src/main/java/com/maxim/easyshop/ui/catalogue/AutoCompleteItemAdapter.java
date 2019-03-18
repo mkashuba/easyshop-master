@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maxim.easyshop.R;
+import com.maxim.easyshop.model.Calculator;
 import com.maxim.easyshop.model.Item;
 import com.squareup.picasso.Picasso;
 
@@ -43,11 +44,13 @@ public class AutoCompleteItemAdapter extends ArrayAdapter<Item> {
 
         if (item != null) {
             Picasso.get()
-                    .load(R.drawable.telega)
+                    .load(item.getImg_url())
                     .fit()
-                    .centerCrop()
+                    .centerInside()
+//                    .centerCrop()
                     .into(imgSearchItem);
             textViewTitle.setText(item.getTitle());
+            textViewPrice.setText("from " + String.valueOf(Calculator.getLowestPriceInItem(item)));
         }
 
         return convertView;

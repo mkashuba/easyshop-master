@@ -2,6 +2,7 @@ package com.maxim.easyshop.presentation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.maxim.easyshop.App;
 import com.maxim.easyshop.model.DbProvider;
 import com.maxim.easyshop.model.Item;
 import com.maxim.easyshop.model.LoadAllItemsFromDbCallback;
@@ -9,14 +10,12 @@ import com.maxim.easyshop.model.ShoppingListSingletone;
 import com.maxim.easyshop.presentation.view.CatalogueView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @InjectViewState
 public class CataloguePresenter extends MvpPresenter<CatalogueView> {
 
-    private List<Item> listItemsAC = new ArrayList<>();
+//    private List<Item> listItemsAC = new ArrayList<>();
     private Item item;
 
 
@@ -39,8 +38,8 @@ public class CataloguePresenter extends MvpPresenter<CatalogueView> {
         DbProvider.getInstance().loadAllItems(new LoadAllItemsFromDbCallback() {
             @Override
             public void setShopList(List<Item> list) {
-                listItemsAC.addAll(list);
-                getViewState().initAutoCompleteAdapter(listItemsAC);
+//                listItemsAC.addAll(list);
+                getViewState().initAutoCompleteAdapter(list);
             }
 
             @Override
@@ -48,5 +47,9 @@ public class CataloguePresenter extends MvpPresenter<CatalogueView> {
 
             }
         });
+    }
+
+    public void create() {
+        App.INSTANCE.getMainRouter().navigateTo(MainActivityPresenter.SHOPPING_CARD_FRAGMENT);
     }
 }

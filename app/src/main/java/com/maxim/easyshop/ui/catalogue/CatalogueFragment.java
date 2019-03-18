@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -23,7 +24,10 @@ import com.maxim.easyshop.model.ShoppingListSingletone;
 import com.maxim.easyshop.presentation.presenter.CataloguePresenter;
 import com.maxim.easyshop.presentation.view.CatalogueView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +40,8 @@ public class CatalogueFragment extends MvpAppCompatFragment implements Catalogue
     @InjectPresenter
     CataloguePresenter cataloguePresenter;
 
+    @BindView(R.id.create_btn)
+    Button createBtn;
     @BindView(R.id.fab)
     FloatingActionButton addBtn;
     @BindView(R.id.circle)
@@ -126,9 +132,11 @@ public class CatalogueFragment extends MvpAppCompatFragment implements Catalogue
 
     @Override
     public void initAutoCompleteAdapter(List<Item> list) {
-        Log.d("MY_TAG", "initAutoCompleteAdapter: list each we set on adapter. Size = " + list.size());
-        ACIAdapter = new AutoCompleteItemAdapter(getContext(), list);
+        List<Item> listItem = new ArrayList<>();
+        listItem.addAll(list);
+        ACIAdapter = new AutoCompleteItemAdapter(getContext(), listItem);
         inputItem.setAdapter(ACIAdapter);
+        listItem.clear();
     }
 
     @Override
@@ -152,5 +160,10 @@ public class CatalogueFragment extends MvpAppCompatFragment implements Catalogue
     public void onDeleteItemClicked(int position) {
         adapterItems.remove(position);
         ShoppingListSingletone.getInstance().deleteItem(position);
+    }
+
+    @OnClick(R.id.create_btn)
+    public void create(){
+        cataloguePresenter.create();
     }
 }
