@@ -76,5 +76,9 @@ dependencies {
     //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //Advanced Recycler View
+    implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

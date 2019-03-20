@@ -171,6 +171,42 @@
                 app:layout_constraintTop_toBottomOf="@+id/your_economy_txt" />
         </android.support.constraint.ConstraintLayout>
 
+        <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/container_my_items_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/container_total">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_view_my_items"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.RecyclerView>-->
+
+        <!--</android.support.constraint.ConstraintLayout>-->
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_total">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 

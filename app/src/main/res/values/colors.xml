@@ -6,4 +6,6 @@
     <color name="colorRed">#E84C3D</color>
     <color name="colorGrey">#95989A</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="bg_group_item_normal_state">#ffddffdd</color>
+    <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
 </resources>
