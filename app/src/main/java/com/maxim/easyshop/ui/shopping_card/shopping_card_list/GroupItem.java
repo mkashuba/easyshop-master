@@ -5,9 +5,13 @@ import java.util.List;
 
 public class GroupItem extends BaseItem {
     public final List<ChildItem> children;
+    public final String totalCoast;
 
-    public GroupItem(String text, long id) {
+
+    public GroupItem(String text, long id, String totalCoast) {
         super(text, id);
         children = new ArrayList<>();
+        this.totalCoast = totalCoast;
+
     }
 }

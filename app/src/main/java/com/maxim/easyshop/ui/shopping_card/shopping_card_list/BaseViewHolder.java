@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
+import com.maxim.easyshop.R;
 
 
 public abstract class BaseViewHolder extends AbstractExpandableItemViewHolder {
@@ -12,7 +13,6 @@ public abstract class BaseViewHolder extends AbstractExpandableItemViewHolder {
 
     public BaseViewHolder(@NonNull View itemView) {
         super(itemView);
-        textView = itemView.findViewById(android.R.id.text1);
-
+        textView = itemView.findViewById(R.id.text1);
     }
 }

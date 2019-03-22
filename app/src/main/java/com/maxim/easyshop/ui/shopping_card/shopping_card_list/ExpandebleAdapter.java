@@ -1,15 +1,22 @@
 package com.maxim.easyshop.ui.shopping_card.shopping_card_list;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.maxim.easyshop.R;
+import com.maxim.easyshop.model.Calculator;
+import com.maxim.easyshop.model.OptimalObj;
+import com.maxim.easyshop.model.ShoppingListSingletone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHolder, ChildViewHolder> {
     List<GroupItem> mItems;
@@ -18,13 +25,31 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
         setHasStableIds(true); // this is required for expandable feature.
 
         mItems = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            GroupItem group = new GroupItem("My items: ", i);
-            for (int j = 0; j < 8; j++) {
-                group.children.add(new ChildItem("item " + j, j));
+
+        String shopName = "";
+        int size = ShoppingListSingletone.getInstance().getShoppingList().size();
+
+        List<OptimalObj> listObj = Calculator.calculateOptimalMode(ShoppingListSingletone.getInstance().getShoppingList());
+
+        Log.d("MY_TAG", "ExpandebleAdapter: SIZE LIST OBJ = " + listObj.size());
+        for(OptimalObj o : listObj){
+            Log.d("MY_TAG", "ExpandebleAdapter: " + o.getNameShop());
+            Log.d("MY_TAG", "ExpandebleAdapter: " + o.getItemListInThisShop().size());
+        }
+
+
+        for (int i = 0; i < listObj.size(); i++) {
+            shopName = listObj.get(i).getNameShop();
+            String s = String.format("%.2f", listObj.get(i).getTotalCoast());
+            GroupItem group = new GroupItem(shopName, i, s);
+            for (int j = 0; j < listObj.get(i).getItemListInThisShop().size(); j++) {
+                String item = listObj.get(i).getItemListInThisShop().get(j).getTitle();
+                group.children.add(new ChildItem(item, j));
             }
             mItems.add(group);
         }
+
+
     }
 
     @Override
@@ -67,6 +92,7 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
     public void onBindGroupViewHolder(@NonNull GroupViewHolder holder, int groupPosition, int viewType) {
         GroupItem group = mItems.get(groupPosition);
         holder.textView.setText(group.text);
+        holder.totalCoast.setText(group.totalCoast);
     }
 
     @Override

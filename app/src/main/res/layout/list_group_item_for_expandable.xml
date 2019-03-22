@@ -5,15 +5,27 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:layout_marginTop="20dp"
-    android:background="#838383"
+    android:background="#949494"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
     <TextView
-        android:id="@android:id/text1"
+        android:id="@+id/text1"
         android:textSize="24sp"
+        android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="25dp"
         android:layout_gravity="start"/>
+
+    <TextView
+        android:id="@+id/total_coast"
+        android:textSize="24sp"
+        android:text="teeest"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="25dp"
+        android:layout_gravity="end"/>
 
 </FrameLayout>
