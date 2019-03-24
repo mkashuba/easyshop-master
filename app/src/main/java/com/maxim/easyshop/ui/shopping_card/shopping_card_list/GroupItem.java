@@ -12,6 +12,5 @@ public class GroupItem extends BaseItem {
         super(text, id);
         children = new ArrayList<>();
         this.totalCoast = totalCoast;
-
     }
 }
