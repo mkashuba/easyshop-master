@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.maxim.easyshop.App;
 import com.maxim.easyshop.R;
+import com.maxim.easyshop.model.ShoppingListSingletone;
 import com.maxim.easyshop.presentation.presenter.MainActivityPresenter;
 import com.maxim.easyshop.presentation.view.MainActivityView;
 import com.maxim.easyshop.ui.catalogue.CatalogueFragment;
@@ -169,6 +170,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     public void logout() {
         auth.signOut();
+
+        //TODO clear list in presenter
+        ShoppingListSingletone.getInstance().getShoppingList().clear();
+
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();

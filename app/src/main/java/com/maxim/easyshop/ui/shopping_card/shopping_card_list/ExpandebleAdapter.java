@@ -1,9 +1,11 @@
 package com.maxim.easyshop.ui.shopping_card.shopping_card_list;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.maxim.easyshop.R;
@@ -34,7 +36,8 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
                 GroupItem group = new GroupItem(shopName, i, s);
                 for (int j = 0; j < listObj.get(i).getItemListInThisShop().size(); j++) {
                     String item = listObj.get(i).getItemListInThisShop().get(j).getTitle();
-                    group.children.add(new ChildItem(item, j));
+                    String priceItem = String.format("%.2f",listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
+                    group.children.add(new ChildItem(item, j, priceItem));
                 }
                 mItems.add(group);
             }
@@ -48,7 +51,8 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
                 GroupItem group = new GroupItem(shopName, i, s);
                 for (int j = 0; j < listObj.get(i).getItemListInThisShop().size(); j++) {
                     String item = listObj.get(i).getItemListInThisShop().get(j).getTitle();
-                    group.children.add(new ChildItem(item, j));
+                    String priceItem = String.format("%.2f",listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
+                    group.children.add(new ChildItem(item, j, priceItem));
                 }
                 mItems.add(group);
             }
@@ -90,6 +94,8 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
     @NonNull
     public ChildViewHolder onCreateChildViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_child_item_for_expandable, parent, false);
+
+//        v.setBackgroundColor(Color.GRAY);
         return new ChildViewHolder(v);
     }
 
@@ -129,7 +135,14 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
     public void onBindChildViewHolder(@NonNull ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
         ChildItem child = mItems.get(groupPosition).children.get(childPosition);
         holder.textView.setText(child.text);
+        holder.priceItem.setText(child.priceInRow);
 
+        if(childPosition % 2 == 0){
+            holder.constraintLayout.setBackgroundColor(Color.WHITE);
+        } else {
+            holder.constraintLayout.setBackgroundColor(Color.LTGRAY);
+
+        }
     }
 
     @Override

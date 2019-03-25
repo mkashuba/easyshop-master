@@ -58,7 +58,6 @@ public class DbProvider implements IDbProvider {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("MY_TAG", "onFailure: Fail!");
                         Log.d("MY_TAG", "onFailure: Exception - " + e.getMessage());
                     }
                 });
@@ -76,9 +75,6 @@ public class DbProvider implements IDbProvider {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 listItem.add(document.toObject(Item.class));
                             }
-                            Log.d("MY_TAG", "onComplete: itemList size = " + listItem.size());
-                            Log.d("MY_TAG", "onComplete: ITEM OBJ : " + listItem.get(0).toString());
-                            Log.d("MY_TAG", "onComplete: ITEM URL : " + listItem.get(0).getImg_url());
                             loadAllItemsFromDbCallback.setShopList(listItem);
                             listItem.clear();
                         } else {
@@ -86,5 +82,15 @@ public class DbProvider implements IDbProvider {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void saveListItemInDB(List<Item> list) {
+        //TODO save list in DB
+    }
+
+    @Override
+    public void loadListItemFromDB() {
+        //TODO load list from DB (with callback in parameter)
     }
 }

@@ -11,7 +11,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable ="true" android:focusableInTouchMode ="true">
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -103,18 +104,18 @@
                 android:id="@+id/input_add_item"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/add_item"
                 android:ems="10"
                 android:hint="Add your items"
-                android:background="@drawable/add_item"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorGrey"
-                android:textSize="18sp"
                 android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textColor="@color/colorGrey"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fab"
                 app:layout_constraintStart_toStartOf="parent"

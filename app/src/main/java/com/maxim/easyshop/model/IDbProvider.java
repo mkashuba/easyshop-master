@@ -8,4 +8,10 @@ public interface IDbProvider {
 
     //Load all items from DB
     void loadAllItems(LoadAllItemsFromDbCallback callback);
+
+    //Save listItems in Db
+    void saveListItemInDB(List<Item> list);
+
+    //Load listItems from Db
+    void loadListItemFromDB();
 }

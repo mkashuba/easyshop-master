@@ -125,6 +125,7 @@ public class LoginActivity extends MvpAppCompatActivity implements MainLoginView
     public void showMainActivity(FirebaseUser fbUser) {
         if (fbUser != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            //TODO get listItem from DB current user where login
             startActivity(intent);
             finish();
         }

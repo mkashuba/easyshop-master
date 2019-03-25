@@ -9,10 +9,14 @@ import java.util.Set;
 
 public final class Calculator {
 
+    public static List<Item> getGlobalListItem() {
+        return ShoppingListSingletone.getInstance().getShoppingList();
+    }
+
     public static double getLowestPriceInItem(Item item) {
         double minPrice = Double.MAX_VALUE;
-        for(Map.Entry<String, Double> e : item.getPrices().entrySet()){
-            if(e.getValue() < minPrice && e.getValue() != -1 && e.getValue() != 0){
+        for (Map.Entry<String, Double> e : item.getPrices().entrySet()) {
+            if (e.getValue() < minPrice && e.getValue() != -1 && e.getValue() != 0) {
                 minPrice = e.getValue();
             }
         }
@@ -44,16 +48,20 @@ public final class Calculator {
             shops.addAll(i.getPrices().keySet());
         }
 
-        for(String nameShop : shops){
-            for(Item i : list){
+        double totalCoast = 0;
+        double price = 0;
+        for (String nameShop : shops) {
+            for (Item i : list) {
                 String nameShopInItem = getLowestPairFromPrices(i).get(0).getKey();
-                if(nameShop.equals(nameShopInItem)){
+                if (nameShop.equals(nameShopInItem)) {
                     listItemInShop.add(i);
+                    price = i.getPrices().get(nameShop);
+                    totalCoast += price;
                 }
             }
-            EconomyObj economyObj = new EconomyObj(nameShop, listItemInShop);
+            EconomyObj economyObj = new EconomyObj(nameShop, totalCoast, listItemInShop);
             resultList.add(economyObj);
-
+            totalCoast = 0;
             listItemInShop.clear();
         }
         Collections.sort(resultList);
@@ -88,6 +96,50 @@ public final class Calculator {
             listItemInShop.clear();
         }
         return resultList;
+    }
+
+    public static List<String> getTotalAndEconomyAmountOptimalMode() {
+        List<String> result = new ArrayList<>();
+        int size = calculateOptimalMode(getGlobalListItem()).size();
+        double total = 0;
+        double minEconomy = 0;
+        double maxEconomy = 0;
+
+        if (size > 0) {
+            total = calculateOptimalMode(getGlobalListItem()).get(0).getTotalCoast();
+            minEconomy = calculateOptimalMode(getGlobalListItem()).get(1).getTotalCoast() - total;
+            maxEconomy = calculateOptimalMode(getGlobalListItem()).get(size - 1).getTotalCoast() - total;
+        }
+
+        result.add(String.format("%.2f", total));
+        result.add(String.format("%.2f", minEconomy));
+        result.add(String.format("%.2f", maxEconomy));
+
+        return result;
+    }
+
+    public static List<String> getTotalAndEconomyAmountEconomyMode() {
+        List<String> result = new ArrayList<>();
+        List<EconomyObj> economyObjs = calculateEconomyMode(getGlobalListItem());
+        int size = calculateEconomyMode(getGlobalListItem()).size();
+        double total = 0;
+        double minEconomy = 0;
+        double maxEconomy = 0;
+
+        if (size > 0) {
+            for (EconomyObj o : economyObjs) {
+                total = total + o.getTotalCoast();
+            }
+
+            minEconomy = calculateOptimalMode(getGlobalListItem()).get(1).getTotalCoast() - total;
+            maxEconomy = calculateOptimalMode(getGlobalListItem()).get(size - 1).getTotalCoast() - total;
+        }
+
+        result.add(String.format("%.2f", total));
+        result.add(String.format("%.2f", minEconomy));
+        result.add(String.format("%.2f", maxEconomy));
+
+        return result;
     }
 
 }
