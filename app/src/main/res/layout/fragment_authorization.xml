@@ -71,7 +71,6 @@
         android:background="@drawable/button"
         android:text="SIGN IN"
         android:textColor="@color/colorRed"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -86,7 +85,6 @@
         android:background="@drawable/button"
         android:text="CREATE MY ACCOUNT"
         android:textColor="@color/colorRed"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_btn" />

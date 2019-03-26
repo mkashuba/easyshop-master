@@ -10,6 +10,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -41,10 +42,10 @@ public class ShoppingCardFragment extends Fragment {
         yourEconomy = view.findViewById(R.id.your_economy_numb_txt);
         switcher = view.findViewById(R.id.switch1);
 
-        switcher.setOnClickListener(new View.OnClickListener() {
+        switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (switcher.isChecked()) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     initRecyclerView(true);
                     initAmountsEconomy();
 
