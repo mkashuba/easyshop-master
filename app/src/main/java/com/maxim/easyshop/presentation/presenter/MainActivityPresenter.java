@@ -41,6 +41,7 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
     }
 
     public void showShopLocatorView() {
+//        getViewState().showProgress();
         currentView = SHOP_LOCATOR_FRAGMENT;
         App.INSTANCE.getMainRouter().navigateTo(SHOP_LOCATOR_FRAGMENT);
         getViewState().showCatalogueView();

@@ -9,5 +9,7 @@ public interface MainActivityView extends MvpView {
     void showCatalogueView();
     void showShoppingCardView();
     void showShopLocatorView();
+//    void showProgress();
+//    void hideProgress();
     void logout();
 }
