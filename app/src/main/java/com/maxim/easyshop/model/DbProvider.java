@@ -25,6 +25,7 @@ public class DbProvider implements IDbProvider {
     private static final DbProvider ourInstance = new DbProvider();
     private FirebaseFirestore db;
     private List<Item> listItem;
+    private List<Shop> listShop;
 
     public static DbProvider getInstance() {
         return ourInstance;
@@ -33,10 +34,15 @@ public class DbProvider implements IDbProvider {
     private DbProvider() {
         db = FirebaseFirestore.getInstance();
         listItem = new ArrayList<>();
+        listShop = new ArrayList<>();
     }
 
-    public void setContext(Context context){
+    public void setContext(Context context) {
         this.context = context;
+    }
+
+    public List<Shop> getListShop() {
+        return listShop;
     }
 
     @Override
@@ -92,5 +98,34 @@ public class DbProvider implements IDbProvider {
     @Override
     public void loadListItemFromDB() {
         //TODO load list from DB (with callback in parameter)
+    }
+
+    @Override
+    public void loadListShopFromDB(final double latitude,
+                                   final double longitude,
+                                   final int radius,
+                                   final LoadShopListFromDbCallback callback) {
+
+        db.collection("shops")
+                .document("israel")
+                .collection("victory")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Shop shop = document.toObject(Shop.class);
+                                shop.setTitle("Test");
+                                listShop.add(shop);
+                            }
+                            callback.setShopList(listShop);
+                            listShop.clear();
+                        } else {
+                            callback.errorLoadShopsFromDb(task.getException());
+                        }
+                    }
+                });
+
     }
 }

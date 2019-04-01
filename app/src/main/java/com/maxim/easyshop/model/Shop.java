@@ -1,6 +1,6 @@
 package com.maxim.easyshop.model;
 
-public class Shop {
+public class Shop implements Comparable<Shop> {
     private String title;
     private String city;
     private String address;
@@ -11,11 +11,18 @@ public class Shop {
     public Shop() {
     }
 
+    public Shop(double latitude, double longitude){
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     // temp constructor
-    public Shop(String title, String city, String address, double distanceToYou) {
+    public Shop(String title, String city, String address, double latitude, double longitude, double distanceToYou) {
         this.title = title;
         this.city = city;
         this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.distanceToYou = distanceToYou;
     }
 
@@ -68,4 +75,8 @@ public class Shop {
     }
 
 
+    @Override
+    public int compareTo(Shop o) {
+        return Double.compare(distanceToYou, o.distanceToYou);
+    }
 }

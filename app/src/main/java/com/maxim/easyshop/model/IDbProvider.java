@@ -14,4 +14,10 @@ public interface IDbProvider {
 
     //Load listItems from Db
     void loadListItemFromDB();
+
+    //load listShop from Db
+    void loadListShopFromDB(double latitude,
+                            double longitude,
+                            int radius,
+                            LoadShopListFromDbCallback callback);
 }

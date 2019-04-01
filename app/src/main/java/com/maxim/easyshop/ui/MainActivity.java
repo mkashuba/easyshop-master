@@ -27,9 +27,16 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import com.maxim.easyshop.App;
 import com.maxim.easyshop.R;
+import com.maxim.easyshop.model.Shop;
 import com.maxim.easyshop.model.ShoppingListSingletone;
 import com.maxim.easyshop.presentation.presenter.MainActivityPresenter;
 import com.maxim.easyshop.presentation.view.MainActivityView;
@@ -37,6 +44,10 @@ import com.maxim.easyshop.ui.catalogue.CatalogueFragment;
 import com.maxim.easyshop.ui.authorization.LoginActivity;
 import com.maxim.easyshop.ui.shop_locator.ShopLocatorFragment;
 import com.maxim.easyshop.ui.shopping_card.ShoppingCardFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,6 +133,97 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         mainActivityPresenter.showNecessaryView();
 
     }
+
+
+    //===========================================================================
+//
+//    private void initData(){
+//        ArrayList<String> listJson = new ArrayList<>();
+//        listJson.add("{\"latitude\":31.308534,\"longitude\":34.625463}");
+//        listJson.add("{\"latitude\":32.129876,\"longitude\":34.995119}");
+//        listJson.add("{\"latitude\":32.1109149,\"longitude\":35.0354823}");
+//        listJson.add("{\"latitude\":31.7760173,\"longitude\":34.6439722}");
+//        listJson.add("{\"latitude\":31.6974952,\"longitude\":34.5774501}");
+//        listJson.add("{\"latitude\":31.6757971,\"longitude\":34.576871}");
+//        listJson.add("{\"latitude\":31.664411,\"longitude\":34.5634}");
+//        listJson.add("{\"latitude\":31.2570696,\"longitude\":34.8144143}");
+//        listJson.add("{\"latitude\":32.49709,\"longitude\":35.494213}");
+//        listJson.add("{\"latitude\":31.749641,\"longitude\":34.987507}");
+//        listJson.add("{\"latitude\":31.8165241,\"longitude\":34.7799328}");
+//        listJson.add("{\"latitude\":31.7753884,\"longitude\":34.7061297}");
+//        listJson.add("{\"latitude\":32.061746,\"longitude\":34.881431}");
+//        listJson.add("{\"latitude\":31.061005,\"longitude\":35.025276}");
+//        listJson.add("{\"latitude\":32.165057,\"longitude\":34.8239744}");
+//        listJson.add("{\"latitude\":32.795924,\"longitude\":35.021885}");
+//        listJson.add("{\"latitude\":32.1981452,\"longitude\":34.887959}");
+//        listJson.add("{\"latitude\":31.946354,\"longitude\":34.8815751}");
+//        listJson.add("{\"latitude\":31.9683499,\"longitude\":34.8998494}");
+//        listJson.add("{\"latitude\":32.3219229,\"longitude\":34.8739838}");
+//        listJson.add("{\"latitude\":32.070357,\"longitude\":34.7809829}");
+//        listJson.add("{\"latitude\":32.852387,\"longitude\":35.081048}");
+//        listJson.add("{\"latitude\":32.605917,\"longitude\":35.296242}");
+//        listJson.add("{\"latitude\":32.104254,\"longitude\":34.969251}");
+//        listJson.add("{\"latitude\":32.0917334,\"longitude\":34.8876459}");
+//        listJson.add("{\"latitude\":32.2404432,\"longitude\":34.9957258}");
+//        listJson.add("{\"latitude\":32.8038603,\"longitude\":35.0933758}");
+//        listJson.add("{\"latitude\":31.6069612,\"longitude\":34.7722869}");
+//        listJson.add("{\"latitude\":31.6036063,\"longitude\":34.7720905}");
+//        listJson.add("{\"latitude\":32.7280438,\"longitude\":35.1404381}");
+//        listJson.add("{\"latitude\":32.85,\"longitude\":35.0793137}");
+//        listJson.add("{\"latitude\":31.7269136,\"longitude\":34.7473789}");
+//        listJson.add("{\"latitude\":31.970118,\"longitude\":34.812955}");
+//        listJson.add("{\"latitude\":31.968505,\"longitude\":34.763903}");
+//        listJson.add("{\"latitude\":32.0964574,\"longitude\":34.9456834}");
+//        listJson.add("{\"latitude\":31.9260398,\"longitude\":34.8786998}");
+//        listJson.add("{\"latitude\":32.705958,\"longitude\":35.158559}");
+//        listJson.add("{\"latitude\":32.1819362,\"longitude\":34.8723087}");
+//        listJson.add("{\"latitude\":32.1855737,\"longitude\":34.8558876}");
+//        listJson.add("{\"latitude\":31.5217335,\"longitude\":34.5972089}");
+//        listJson.add("{\"latitude\":32.0054933,\"longitude\":34.9465997}");
+//        listJson.add("{\"latitude\":32.107043,\"longitude\":34.8044052}");
+//        listJson.add("{\"latitude\":32.085533,\"longitude\":34.766875}");
+//        listJson.add("{\"latitude\":32.0665637,\"longitude\":34.7842366}");
+//        listJson.add("{\"latitude\":32.0638462,\"longitude\":34.773168}");
+//        listJson.add("{\"latitude\":32.056664,\"longitude\":34.779869}");
+//        listJson.add("{\"latitude\":32.0549635,\"longitude\":34.7692812}");
+//        listJson.add("{\"latitude\":32.2577256,\"longitude\":34.9207048}");
+//
+//        ArrayList<Shop> listShops = new ArrayList<>();
+//        Gson gson = new Gson();
+//        for (int i = 0; i < listJson.size(); i++) {
+//            listShops.add(gson.fromJson(listJson.get(i), Shop.class));
+//            writeDataToCloud(listShops.get(i));
+//        }
+//    }
+//
+//    public void writeDataToCloud(Shop shop) {
+//        // Create a new user with a first and last name
+//        Map<String, Object> shopMap = new HashMap<>();
+//        shopMap.put("latitude", shop.getLatitude());
+//        shopMap.put("longitude", shop.getLongitude());
+//
+//
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//// Add a new document with a generated ID
+//        db.collection("shops")
+//                .document("israel")
+//                .collection("victory")
+//                .add(shopMap)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("MY_TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("MY_TAG", "Error adding document", e);
+//                    }
+//                });
+//    }
+
+    //===========================================================================
 
     @Override
     protected void onResume() {

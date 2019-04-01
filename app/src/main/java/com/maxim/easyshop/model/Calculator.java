@@ -1,5 +1,7 @@
 package com.maxim.easyshop.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -140,6 +142,59 @@ public final class Calculator {
         result.add(String.format("%.2f", maxEconomy));
 
         return result;
+    }
+
+    public static List<Shop> getListShopInRadius(List<Shop> listShop, int radius){
+        List<Shop> listShopInRadius = new ArrayList<>();
+
+        for(Shop shop : listShop){
+            double dist = distance(MyLastLocation.getInstance(), shop);
+            if(dist <= radius){
+                shop.setDistanceToYou(dist);
+                listShopInRadius.add(shop);
+            }
+        }
+
+        return listShopInRadius;
+    }
+
+    private static double distance(MyLastLocation myLastLocation, Shop shop){
+        final int EARTH_RADIUS = 6371000;
+        double myLat = myLastLocation.getLatitude();
+        double myLong = myLastLocation.getLongitude();
+        double shopLat = shop.getLatitude();
+        double shopLong = shop.getLongitude();
+//
+//        double lat1 = myLat * Math.PI / 180;
+//        double lat2 = shopLat * Math.PI / 180;
+//        double long1 = myLong * Math.PI / 180;
+//        double long2 = shopLong * Math.PI / 180;
+
+//        double cl1 = Math.cos(lat1);
+//        double cl2 = Math.cos(lat2);
+//        double sl1 = Math.sin(lat1);
+//        double sl2 = Math.sin(lat2);
+//        double delta = long2 - long1;
+//        double cDelta = Math.cos(delta);
+//        double sDelta = Math.sin(delta);
+//
+//        double y = Math.sqrt(Math.pow(cl2 * sDelta, 2) + Math.pow(cl1 * sl2 - sl1 * cl2 * cDelta, 2));
+//        double x = sl1 * sl2 + cl1 * cl2 * cDelta;
+//
+//        double ad = Math.atan2(y, x);
+//        double dist = ad * EARTH_RADIUS;
+
+        double latDistance = Math.toRadians(myLat - shopLat);
+        double lngDistance = Math.toRadians(myLong - shopLong);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(myLat)) * Math.cos(Math.toRadians(shopLat))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double dist = Math.round(EARTH_RADIUS * c);
+
+        return dist;
     }
 
 }
