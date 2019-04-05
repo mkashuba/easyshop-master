@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHolder, ChildViewHolder> {
@@ -32,11 +33,11 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
 
             for (int i = 0; i < listObj.size(); i++) {
                 shopName = listObj.get(i).getNameShop();
-                String s = String.format("%.2f", listObj.get(i).getTotalCoast());
+                String s = String.format(Locale.US, "%.2f", listObj.get(i).getTotalCoast());
                 GroupItem group = new GroupItem(shopName, i, s);
                 for (int j = 0; j < listObj.get(i).getItemListInThisShop().size(); j++) {
                     String item = listObj.get(i).getItemListInThisShop().get(j).getTitle();
-                    String priceItem = String.format("%.2f",listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
+                    String priceItem = String.format(Locale.US, "%.2f", listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
                     group.children.add(new ChildItem(item, j, priceItem));
                 }
                 mItems.add(group);
@@ -51,7 +52,7 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
                 GroupItem group = new GroupItem(shopName, i, s);
                 for (int j = 0; j < listObj.get(i).getItemListInThisShop().size(); j++) {
                     String item = listObj.get(i).getItemListInThisShop().get(j).getTitle();
-                    String priceItem = String.format("%.2f",listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
+                    String priceItem = String.format(Locale.US, "%.2f", listObj.get(i).getItemListInThisShop().get(j).getPrices().get(shopName));
                     group.children.add(new ChildItem(item, j, priceItem));
                 }
                 mItems.add(group);
@@ -127,6 +128,13 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
                     .fit()
                     .centerCrop()
                     .into(holder.imgShop);
+        } else if (group.text.equals("victory")) {
+
+            Picasso.get()
+                    .load(R.drawable.victory_logo)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.imgShop);
         }
 
     }
@@ -137,7 +145,7 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
         holder.textView.setText(child.text);
         holder.priceItem.setText(child.priceInRow);
 
-        if(childPosition % 2 == 0){
+        if (childPosition % 2 == 0) {
             holder.constraintLayout.setBackgroundColor(Color.WHITE);
         } else {
             holder.constraintLayout.setBackgroundColor(Color.LTGRAY);

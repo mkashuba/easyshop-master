@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.amar.library.ui.StickyScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorRed"
+    app:stickyHeader="@+id/container_for_map">
+
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -105,12 +112,14 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginTop="16dp"
+            android:background="@color/colorRed"
             app:layout_constraintTop_toBottomOf="@id/container_seekbar">
 
             <com.google.android.gms.maps.MapView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="1dp"
                 android:id="@+id/map" />
 
             <ImageView
@@ -125,7 +134,6 @@
             android:id="@+id/container_for_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
             android:background="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -169,3 +177,4 @@
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>
+</com.amar.library.ui.StickyScrollView>

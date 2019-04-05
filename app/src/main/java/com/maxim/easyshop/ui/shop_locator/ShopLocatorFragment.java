@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -184,6 +185,7 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
         }
         this.googleMap = googleMap;
         this.googleMap.setMyLocationEnabled(true);
+        this.googleMap.getUiSettings().setZoomControlsEnabled(true);
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -220,9 +222,9 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
             } else if(nameShop.contains("Tiv-Taam")){
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.tivtaam_logo2));
             } else if(nameShop.contains("Victory")){
-//                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.victory_logo2));
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.victory_logo2));
             } else if(nameShop.contains("Rami-Levy")){
-//                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ramilevy_logo2));
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ramilevy_logo2));
             }
 
         }

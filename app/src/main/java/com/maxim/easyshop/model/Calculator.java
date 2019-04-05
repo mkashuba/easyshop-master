@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -113,9 +114,9 @@ public final class Calculator {
             maxEconomy = calculateOptimalMode(getGlobalListItem()).get(size - 1).getTotalCoast() - total;
         }
 
-        result.add(String.format("%.2f", total));
-        result.add(String.format("%.2f", minEconomy));
-        result.add(String.format("%.2f", maxEconomy));
+        result.add(String.format(Locale.US, "%.2f", total));
+        result.add(String.format(Locale.US, "%.2f", minEconomy));
+        result.add(String.format(Locale.US, "%.2f", maxEconomy));
 
         return result;
     }
@@ -137,9 +138,9 @@ public final class Calculator {
             maxEconomy = calculateOptimalMode(getGlobalListItem()).get(size - 1).getTotalCoast() - total;
         }
 
-        result.add(String.format("%.2f", total));
-        result.add(String.format("%.2f", minEconomy));
-        result.add(String.format("%.2f", maxEconomy));
+        result.add(String.format(Locale.US, "%.2f", total));
+        result.add(String.format(Locale.US, "%.2f", minEconomy));
+        result.add(String.format(Locale.US, "%.2f", maxEconomy));
 
         return result;
     }
