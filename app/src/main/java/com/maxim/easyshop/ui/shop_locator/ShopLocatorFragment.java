@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +27,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.maxim.easyshop.R;
@@ -46,9 +52,11 @@ import java.util.List;
 
 import static com.maxim.easyshop.model.Constants.MAPVIEW_BUNDLE_KEY;
 
-public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
+public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
+        View.OnTouchListener,
+        SeekBar.OnSeekBarChangeListener {
 
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private ImageView imageView;
     private SeekBar seekBar;
     private TextView distanceTxt;
@@ -58,7 +66,7 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     private MapView mapView;
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationClient;
-
+    private int startRadius = 3000;
 
     public ShopLocatorFragment() {
 
@@ -79,21 +87,20 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
         imageView.setOnTouchListener(this);
         seekBar.setOnSeekBarChangeListener(this);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("SHOP LOCATOR");
+        recyclerView.setNestedScrollingEnabled(false);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         initGoogleMap(savedInstanceState);
-        initListShop(10000);
+        initListShop(startRadius);
+        String distTxt = startRadius/1000 + " km";
+        distanceTxt.setText(distTxt);
 
         return view;
     }
 
     private void initListShop(final int radius) {
         final List<Shop> tmpList = new ArrayList<>();
-//        tmpList.add(new Shop("Victory", "Ashqelon", "Bar Kochba 24", 452.24));
-//        tmpList.add(new Shop("Tiv-Taam", "Ashqelon", "Eli-Cohen 15", 500.00));
-//        tmpList.add(new Shop("Ramy Levy", "Ashqelon", "Bar Kochba 40", 600.00));
-//        tmpList.add(new Shop("Victory", "Ashqelon", "Street 24", 1025.22));
-//        tmpList.add(new Shop("Shufersal", "Ashqelon", "Bar Kochba 24", 2366.02));
         double lat = MyLastLocation.getInstance().getLatitude();
         double lon = MyLastLocation.getInstance().getLongitude();
 
@@ -139,19 +146,19 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
         int distance = 0;
         switch (progress) {
             case 0:
-                distance = 5000;
+                distance = 1000;
                 break;
             case 1:
-                distance = 10000;
+                distance = 3000;
                 break;
             case 2:
-                distance = 20000;
+                distance = 5000;
                 break;
             case 3:
-                distance = 35000;
+                distance = 10000;
                 break;
             case 4:
-                distance = 50000;
+                distance = 100000;
                 break;
             default:
                 distance = -1;
@@ -161,7 +168,7 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
 
     //    @SuppressLint("MissingPermission")
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -176,7 +183,7 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
             return;
         }
         this.googleMap = googleMap;
-        googleMap.setMyLocationEnabled(true);
+        this.googleMap.setMyLocationEnabled(true);
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -191,6 +198,8 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
                             MyLastLocation.getInstance().setLatitude(lat);
                             MyLastLocation.getInstance().setLongitude(lon);
                         }
+
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 12.5f));
                     }
                 });
 
@@ -199,9 +208,29 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     public void initMarkersOnMap(List<Shop> shopList){
         googleMap.clear();
         for(Shop shop : shopList){
-            LatLng marker = new LatLng(shop.getLatitude(), shop.getLongitude());
-            googleMap.addMarker(new MarkerOptions().position(marker)).setTitle("Victory");
+            LatLng latLng = new LatLng(shop.getLatitude(), shop.getLongitude());
+            Marker marker = googleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(shop.getTitle())
+                    .snippet("Distance: " + String.format("%.0f", shop.getDistanceToYou()) + " m"));
+
+            String nameShop = shop.getTitle();
+            if(nameShop.contains("Shufersal")){
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.shufersal_logo2));
+            } else if(nameShop.contains("Tiv-Taam")){
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.tivtaam_logo2));
+            } else if(nameShop.contains("Victory")){
+//                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.victory_logo2));
+            } else if(nameShop.contains("Rami-Levy")){
+//                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ramilevy_logo2));
+            }
+
         }
+
+
+
+
+
     }
 
 
@@ -282,9 +311,30 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         progressValue = progress;
         int radius = getDistance(progressValue);
-        String str = String.valueOf(radius) + " m";
+        String str = String.valueOf(radius/1000) + " km";
         distanceTxt.setText(str);
+        double lat = MyLastLocation.getInstance().getLatitude();
+        double lng = MyLastLocation.getInstance().getLongitude();
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), getZoomValue(radius)));
         initListShop(radius);
+    }
+
+    private float getZoomValue(int radius){
+        float zoom = 1;
+        switch(radius){
+            case 1000 : zoom = 14;
+            break;
+            case 3000 : zoom = 12.5f;
+            break;
+            case 5000 : zoom = 12;
+            break;
+            case 10000 : zoom = 11;
+            break;
+            case 100000 : zoom = 7;
+            break;
+            default: zoom = 1;
+        }
+        return zoom;
     }
 
     @Override

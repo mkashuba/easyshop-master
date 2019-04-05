@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Кастомная AppTheme.Launcher. Устанавливает в качестве фона вашу drawable -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+         <item name="colorPrimaryDark">@color/colorRed</item>
+    </style>
+
     <style name="Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">70dp</item>
@@ -15,11 +22,8 @@
     </style>
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
-        <!-- активное состояние (30% прозрачности для фона) -->
         <item name="colorControlActivated">@color/colorRed</item>
-        <!-- неактивное состояние ползунка -->
         <item name="colorSwitchThumbNormal">@color/colorRed</item>
-        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
         <item name="android:colorForeground">@color/colorWhite</item>
         <item name="trackTint">@color/colorWhite</item>
     </style>

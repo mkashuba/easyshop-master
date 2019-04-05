@@ -107,8 +107,6 @@ public class DbProvider implements IDbProvider {
                                    final LoadShopListFromDbCallback callback) {
 
         db.collection("shops")
-                .document("israel")
-                .collection("victory")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -116,10 +114,10 @@ public class DbProvider implements IDbProvider {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Shop shop = document.toObject(Shop.class);
-                                shop.setTitle("Test");
                                 listShop.add(shop);
                             }
                             callback.setShopList(listShop);
+                            Log.d("size shops", "onComplete: size = " + listShop.size());
                             listShop.clear();
                         } else {
                             callback.errorLoadShopsFromDb(task.getException());

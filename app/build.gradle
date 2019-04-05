@@ -38,6 +38,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:16.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.6'
 
+    //StickyScroll
+    implementation 'com.github.amarjain07:StickyScrollView:1.0.2'
+
     //Moxy
     implementation 'com.arello-mobile:moxy:1.5.5'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'

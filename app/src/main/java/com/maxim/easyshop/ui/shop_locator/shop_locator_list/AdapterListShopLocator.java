@@ -39,7 +39,15 @@ public class AdapterListShopLocator extends RecyclerView.Adapter<AdapterListShop
         shopViewHolder.titleTxt.setText(shop.getTitle());
         shopViewHolder.addressTxt.setText(shop.getAddress());
         shopViewHolder.cityTxt.setText(shop.getCity());
-        shopViewHolder.distanceTxt.setText(String.format("%.2f", shop.getDistanceToYou()));
+        double dist = shop.getDistanceToYou();
+        String strDist = "";
+        if (dist < 1000) {
+            strDist = String.format("%.0f", dist) + " m";
+        } else {
+            double dDist = dist / 1000;
+            strDist = String.format("%.2f", dDist) + " km";
+        }
+        shopViewHolder.distanceTxt.setText(strDist);
     }
 
     @Override
@@ -47,7 +55,7 @@ public class AdapterListShopLocator extends RecyclerView.Adapter<AdapterListShop
         return shopList.size();
     }
 
-    class ShopViewHolder extends RecyclerView.ViewHolder{
+    class ShopViewHolder extends RecyclerView.ViewHolder {
 
         private TextView counterTxt, titleTxt, cityTxt, addressTxt, distanceTxt;
         private CheckBox checkBox;
