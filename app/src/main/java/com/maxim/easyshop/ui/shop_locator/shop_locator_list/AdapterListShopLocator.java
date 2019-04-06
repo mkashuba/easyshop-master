@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.maxim.easyshop.R;
@@ -17,6 +18,11 @@ import java.util.List;
 public class AdapterListShopLocator extends RecyclerView.Adapter<AdapterListShopLocator.ShopViewHolder> {
 
     private List<Shop> shopList;
+    private AdapterShopsCheckboxChangeCallback adapterShopsCheckboxChangeCallback;
+
+    public void setAdapterShopsCheckboxChangeCallback(AdapterShopsCheckboxChangeCallback adapterShopsCheckboxChangeCallback) {
+        this.adapterShopsCheckboxChangeCallback = adapterShopsCheckboxChangeCallback;
+    }
 
     public AdapterListShopLocator(List<Shop> shopList) {
         this.shopList = new ArrayList<>();
@@ -60,7 +66,7 @@ public class AdapterListShopLocator extends RecyclerView.Adapter<AdapterListShop
         private TextView counterTxt, titleTxt, cityTxt, addressTxt, distanceTxt;
         private CheckBox checkBox;
 
-        public ShopViewHolder(@NonNull View itemView) {
+        public ShopViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             counterTxt = itemView.findViewById(R.id.count_shop_txt);
@@ -69,6 +75,18 @@ public class AdapterListShopLocator extends RecyclerView.Adapter<AdapterListShop
             addressTxt = itemView.findViewById(R.id.address_shop_txt);
             distanceTxt = itemView.findViewById(R.id.distance_shop_txt);
             checkBox = itemView.findViewById(R.id.checkBox);
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        adapterShopsCheckboxChangeCallback.checkboxIsChecked(shopList.get(getAdapterPosition()));
+                    } else {
+                        adapterShopsCheckboxChangeCallback.checkboxIsUnChecked(shopList.get(getAdapterPosition()));
+                    }
+                }
+            });
+
         }
     }
 }

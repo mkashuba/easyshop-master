@@ -149,7 +149,6 @@ public class ExpandebleAdapter extends AbstractExpandableItemAdapter<GroupViewHo
             holder.constraintLayout.setBackgroundColor(Color.WHITE);
         } else {
             holder.constraintLayout.setBackgroundColor(Color.LTGRAY);
-
         }
     }
 

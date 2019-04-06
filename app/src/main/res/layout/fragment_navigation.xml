@@ -22,6 +22,7 @@
     <TextView
         android:id="@+id/catalogue_btn"
         android:clickable="true"
+        android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
@@ -35,6 +36,7 @@
     <TextView
         android:id="@+id/shopping_card_btn"
         android:clickable="true"
+        android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -49,6 +51,7 @@
     <TextView
         android:id="@+id/shop_locator_btn"
         android:clickable="true"
+        android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

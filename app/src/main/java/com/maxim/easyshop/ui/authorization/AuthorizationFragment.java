@@ -67,5 +67,10 @@ public class AuthorizationFragment extends Fragment {
         App.INSTANCE.getLoginRouter().navigateTo(MainLoginPresenter.REGISTRATION_FRAGMENT);
     }
 
+    @OnClick(R.id.forgot_btn)
+    public void forgotPass(){
+
+    }
+
 
 }

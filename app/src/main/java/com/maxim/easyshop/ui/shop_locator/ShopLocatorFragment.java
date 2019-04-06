@@ -2,11 +2,9 @@ package com.maxim.easyshop.ui.shop_locator;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
@@ -14,14 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -31,8 +26,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -44,8 +37,8 @@ import com.maxim.easyshop.model.DbProvider;
 import com.maxim.easyshop.model.LoadShopListFromDbCallback;
 import com.maxim.easyshop.model.MyLastLocation;
 import com.maxim.easyshop.model.Shop;
-import com.maxim.easyshop.ui.catalogue.AdapterItems;
 import com.maxim.easyshop.ui.shop_locator.shop_locator_list.AdapterListShopLocator;
+import com.maxim.easyshop.ui.shop_locator.shop_locator_list.AdapterShopsCheckboxChangeCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +48,7 @@ import static com.maxim.easyshop.model.Constants.MAPVIEW_BUNDLE_KEY;
 
 public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
         View.OnTouchListener,
-        SeekBar.OnSeekBarChangeListener {
+        SeekBar.OnSeekBarChangeListener, AdapterShopsCheckboxChangeCallback {
 
     private NestedScrollView scrollView;
     private ImageView imageView;
@@ -68,6 +61,9 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationClient;
     private int startRadius = 3000;
+    private final List<Shop> shopListInRadius = new ArrayList<>();
+    private List<Shop> checkedListShop = new ArrayList<>();
+
 
     public ShopLocatorFragment() {
 
@@ -101,17 +97,18 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void initListShop(final int radius) {
-        final List<Shop> tmpList = new ArrayList<>();
+        checkedListShop.clear();
         double lat = MyLastLocation.getInstance().getLatitude();
         double lon = MyLastLocation.getInstance().getLongitude();
 
         DbProvider.getInstance().loadListShopFromDB(lat, lon, radius, new LoadShopListFromDbCallback() {
             @Override
             public void setShopList(List<Shop> shopList) {
-                tmpList.addAll(Calculator.getListShopInRadius(shopList, radius));
-                Collections.sort(tmpList);
-                initMarkersOnMap(tmpList);
-                initAdapter(tmpList);
+                shopListInRadius.clear();
+                shopListInRadius.addAll(Calculator.getListShopInRadius(shopList, radius));
+                Collections.sort(shopListInRadius);
+                initMarkersOnMap(shopListInRadius);
+                initAdapter(shopListInRadius);
             }
 
             @Override
@@ -128,6 +125,7 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
         recyclerView.setAdapter(adapterShop);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        adapterShop.setAdapterShopsCheckboxChangeCallback(this);
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
@@ -347,5 +345,23 @@ public class ShopLocatorFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public void checkboxIsChecked(Shop shop) {
+        checkedListShop.add(shop);
+        initMarkersOnMap(checkedListShop);
+    }
+
+    @Override
+    public void checkboxIsUnChecked(Shop shop) {
+        if(!checkedListShop.isEmpty()){
+            checkedListShop.remove(shop);
+            if(checkedListShop.isEmpty()){
+                initMarkersOnMap(shopListInRadius);
+            } else{
+                initMarkersOnMap(checkedListShop);
+            }
+        }
     }
 }
