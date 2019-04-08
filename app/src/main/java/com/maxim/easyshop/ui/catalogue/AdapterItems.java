@@ -72,7 +72,9 @@ public class AdapterItems extends RecyclerView.Adapter<AdapterItems.ItemViewHold
             rowDeleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    adapterItemsClickCallback.onDeleteItemClicked(getAdapterPosition());
+                    if(getAdapterPosition() != RecyclerView.NO_POSITION){
+                        adapterItemsClickCallback.onDeleteItemClicked(getAdapterPosition());
+                    }
                 }
             });
 

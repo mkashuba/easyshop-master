@@ -69,7 +69,12 @@ public class AuthorizationFragment extends Fragment {
 
     @OnClick(R.id.forgot_btn)
     public void forgotPass(){
+        openDialog();
+    }
 
+    public void openDialog() {
+        ForgotPassDialog forgotDialog = new ForgotPassDialog();
+        forgotDialog.show(getFragmentManager(), "forgot dialog");
     }
 
 
